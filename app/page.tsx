@@ -79,4 +79,60 @@ export default function ArbUltimate() {
               <div key={idx} className={relative bg-zinc-900 border ${idx === 0 ? 'border-yellow-500' : 'border-zinc-800'} rounded-2xl p-6 hover:bg-zinc-800/50 transition-all}>
                 
                 {/* Rank Badge */}
-                <div className={`absolute -top-3 left-6 px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase ${
+                <div className={`absolute -top-3 left-6 px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase ${idx === 0 ? 'bg-yellow-500 text-black' : 
+                  idx === 1 ? 'bg-zinc-400 text-black' : 
+                  idx === 2 ? 'bg-orange-600 text-black' : 'bg-zinc-800 text-zinc-400'
+                }}>
+                  RANK #{idx + 1}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+                  
+                  {/* Token & CA */}
+                  <div>
+                    <h3 className="text-xl font-bold flex items-center gap-2">
+                      {item.symbol}
+                      <button onClick={() => { navigator.clipboard.writeText(item.tokenAddress); setCopied(item.symbol); setTimeout(()=>setCopied(""), 2000); }} className="p-1 hover:text-blue-500">
+                        {copied === item.symbol ? <Check size={14} className="text-emerald-400"/> : <Copy size={14}/>}
+                      </button>
+                    </h3>
+                    <p className="text-[10px] text-zinc-600 font-mono truncate">{item.tokenAddress}</p>
+                  </div>
+
+                  {/* Buy/Sell comparison */}
+                  <div className="md:col-span-2 flex justify-between items-center bg-black/50 p-4 rounded-xl border border-zinc-800/50">
+                    <div className="text-center">
+                      <p className="text-[9px] text-zinc-500 font-bold uppercase">{item.buy.chain}</p>
+                      <p className="text-[11px] truncate text-zinc-300">{item.buy.dex}</p>
+                      <p className="font-mono text-emerald-400 font-bold">${item.buy.price.toFixed(6)}</p>
+                    </div>
+                    
+                    <TrendingUp className="text-zinc-700" />
+                    
+                    <div className="text-center">
+                      <p className="text-[9px] text-zinc-500 font-bold uppercase">{item.sell.chain}</p>
+                      <p className="text-[11px] truncate text-zinc-300">{item.sell.dex}</p>
+                      <p className="font-mono text-rose-400 font-bold">${item.sell.price.toFixed(6)}</p>
+                    </div>
+                  </div>
+
+                  {/* Spread & Profit */}
+                  <div className="text-right">
+                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Net Profit ({item.spread}% SPREAD)</p>
+                    <p className={text-2xl font-black ${netProfit > 0 ? 'text-emerald-400' : 'text-zinc-600'}`}>
+                      ${netProfit.toFixed(2)}
+                    </div>
+                    
+                    <a href={item.buy.link} target="_blank" className="inline-block mt-3 bg-white text-black px-4 py-2 rounded text-xs font-black uppercase tracking-tighter hover:bg-blue-500 hover:text-white transition-all">
+                      GO TO POOL <ExternalLink size={12} className="inline ml-1"/>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
